@@ -31,6 +31,9 @@
     "plugins": [
       "expo-router"
     ],
+    "extra": {
+      "root": "src/app"
+    },
     "experiments": {
       "typedRoutes": true
     }
