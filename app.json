@@ -32,7 +32,9 @@
       "expo-router"
     ],
     "extra": {
-      "root": "src/app"
+      "router": {
+        "root": "src/app"
+      }
     },
     "experiments": {
       "typedRoutes": true
