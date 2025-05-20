@@ -6,7 +6,7 @@ import { colors } from "@/styles/colors";
 
 import { Categories } from "@/components/categories";
 import { Link } from "@/components/link";
-
+import { Option } from "@/components/option"
 
 export default function Index() {
     return (
@@ -40,12 +40,21 @@ export default function Index() {
                                 <MaterialIcons name="close" size={20} color={colors.gray[400]} />
                             </TouchableOpacity>
                         </View>
+                        
                         <Text style={styles.modalLinkName}>
                             TesteVinicius
                         </Text>
                         <Text style={styles.modalUrl}>
                             https://github.com/vsslvini?tab=repositories
                         </Text>
+
+
+                        <View style={styles.modalFooter}>
+                        <Option name="Excluir" icon="delete" variant="secudary" />
+                        <Option name="Abrir" icon="language" variant="primary" />
+                        </View>
+
+
                     </View>
                 </View>
 

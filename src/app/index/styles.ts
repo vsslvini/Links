@@ -40,18 +40,19 @@ export const styles = StyleSheet.create({
         backgroundColor: colors.gray[900],
         borderTopWidth: 1,
         borderTopColor: colors.gray[800],
-        paddingBottom: 42,
+        paddingBottom: 32,
         padding: 24,
     },
     modalHeader: {
         width: "100%",
         flexDirection: "row",
         alignItems: "center",
+        marginBottom: 42,
     },
     modalCategory: {
         flex: 1,
         fontSize: 16,
-        fontWeight: "600",
+        fontWeight: "500",
         color: colors.gray[400],
     },
     modalLinkName: {
@@ -62,5 +63,14 @@ export const styles = StyleSheet.create({
     modalUrl: {
         fontSize: 14,
         color: colors.gray[400],
+    },
+    modalFooter:{
+        flexDirection: "row",
+        marginTop: 32,
+        width: "100%",
+        justifyContent: "space-between",
+        borderTopWidth: 1,
+        borderTopColor: colors.gray[600],
+        paddingVertical: 14,
     },
 })
