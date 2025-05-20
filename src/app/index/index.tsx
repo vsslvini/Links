@@ -5,6 +5,8 @@ import { colors } from "@/styles/colors";
 
 
 import { Categories } from "@/components/categories";
+import { Link } from "@/components/link";
+
 
 export default function Index() {
     return (
@@ -15,7 +17,10 @@ export default function Index() {
                     <MaterialIcons name="add" size={32} color={colors.green[300]} />
                 </TouchableOpacity>
             </View>
+
             <Categories />
+
+            <Link name="Meu GitHub" url="https://github.com/vsslvini?tab=repositories" onDetails={() => console.log("Clicou")}/>
         </View>
     )
 }
