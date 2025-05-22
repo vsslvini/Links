@@ -1,8 +1,8 @@
-import { View, Image, TouchableOpacity, FlatList, Modal, Text } from "react-native";
+import { View, Image, TouchableOpacity, FlatList, Modal, Text, Alert } from "react-native";
 import { styles } from "./styles"
 import { MaterialIcons } from "@expo/vector-icons"
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 import { colors } from "@/styles/colors";
@@ -10,16 +10,32 @@ import { Categories } from "@/components/categories";
 import { Link } from "@/components/link";
 import { Option } from "@/components/option";
 import { categories } from "@/utils/categories";
+import { LinkStorage, linkStorage } from "@/storage/link-storage";
 
 
 export default function Index() {
     const router = useRouter();
+    const [links, setLinks] = useState<LinkStorage[]>([])
     const [category, setCategory] = useState(categories[0].name)
+
+    async function getLinks() {
+        try {
+            const response = await linkStorage.get()
+            setLinks(response)
+        } catch (error) {
+            Alert.alert("Erro", "Não foi possivel listar os links")
+            console.log(error)
+        }
+    }
 
     const navigateToAdd = () => {
         router.navigate("/add")
     }
-    
+
+    useEffect(() => {
+        getLinks()
+    }, [category])
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -29,13 +45,17 @@ export default function Index() {
                 </TouchableOpacity>
             </View>
 
-            <Categories onChange={setCategory} selected={category}/>
+            <Categories onChange={setCategory} selected={category} />
 
             <FlatList
-                data={["1", "2", "3"]}
-                keyExtractor={(item) => item}
-                renderItem={() => (
-                    <Link name="Meu GitHub" url="https://github.com/vsslvini?tab=repositories" onDetails={() => console.log("Clicou")} />
+                data={links}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <Link
+                        name={item.name}
+                        url={item.url}
+                        onDetails={() => console.log("Clicou")}
+                    />
                 )}
                 style={styles.links}
                 contentContainerStyle={styles.linksContent}
@@ -51,7 +71,7 @@ export default function Index() {
                                 <MaterialIcons name="close" size={20} color={colors.gray[400]} />
                             </TouchableOpacity>
                         </View>
-                        
+
                         <Text style={styles.modalLinkName}>
                             TesteVinicius
                         </Text>
@@ -61,8 +81,8 @@ export default function Index() {
 
 
                         <View style={styles.modalFooter}>
-                        <Option name="Excluir" icon="delete" variant="secudary" />
-                        <Option name="Abrir" icon="language" variant="primary" />
+                            <Option name="Excluir" icon="delete" variant="secudary" />
+                            <Option name="Abrir" icon="language" variant="primary" />
                         </View>
 
 
