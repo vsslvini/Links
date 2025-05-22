@@ -11,6 +11,7 @@ import { Link } from "@/components/link";
 import { Option } from "@/components/option";
 import { categories } from "@/utils/categories";
 
+
 export default function Index() {
     const router = useRouter();
     const [category, setCategory] = useState(categories[0].name)
