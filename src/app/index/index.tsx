@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity, FlatList, Modal, Text, Alert } from "react-native";
+import { View, Image, TouchableOpacity, FlatList, Modal, Text, Alert, Linking } from "react-native";
 import { styles } from "./styles"
 import { MaterialIcons } from "@expo/vector-icons"
 import { useRouter, useFocusEffect } from "expo-router";
@@ -58,6 +58,15 @@ export default function Index() {
         ])
     }
 
+    async function handleOpen() {
+        try {
+            await Linking.openURL(link.url)
+            setShowModal(false)
+        } catch (error) {
+            Alert.alert("Link", "Não foi possivel abrir o link")
+            console.log(error)
+        }
+    }
 
 
     const navigateToAdd = () => {
@@ -115,7 +124,7 @@ export default function Index() {
 
                         <View style={styles.modalFooter}>
                             <Option name="Excluir" icon="delete" variant="secudary" onPress={handleRemove} />
-                            <Option name="Abrir" icon="language" variant="primary" />
+                            <Option name="Abrir" icon="language" variant="primary"  onPress={handleOpen}/>
                         </View>
 
 
