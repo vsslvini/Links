@@ -1,8 +1,8 @@
 import { View, Image, TouchableOpacity, FlatList, Modal, Text, Alert } from "react-native";
 import { styles } from "./styles"
 import { MaterialIcons } from "@expo/vector-icons"
-import { useRouter } from "expo-router";
-import { useState, useEffect } from "react";
+import { useRouter, useFocusEffect } from "expo-router";
+import { useState, useCallback } from "react";
 
 
 import { colors } from "@/styles/colors";
@@ -15,26 +15,36 @@ import { LinkStorage, linkStorage } from "@/storage/link-storage";
 
 export default function Index() {
     const router = useRouter();
+    const [showModal, setShowModal] = useState(false)
+    const [link, setLink] = useState<LinkStorage>({} as LinkStorage)
     const [links, setLinks] = useState<LinkStorage[]>([])
     const [category, setCategory] = useState(categories[0].name)
 
     async function getLinks() {
         try {
             const response = await linkStorage.get()
-            setLinks(response)
+
+            const filtered = response.filter((link) => link.category === category)
+
+            setLinks(filtered)
         } catch (error) {
             Alert.alert("Erro", "Não foi possivel listar os links")
             console.log(error)
         }
     }
 
+    function handleDetails(selected: LinkStorage) {
+        setShowModal(true)
+        setLink(selected)
+    }
+
     const navigateToAdd = () => {
         router.navigate("/add")
     }
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         getLinks()
-    }, [category])
+    }, [category]))
 
     return (
         <View style={styles.container}>
@@ -54,7 +64,7 @@ export default function Index() {
                     <Link
                         name={item.name}
                         url={item.url}
-                        onDetails={() => console.log("Clicou")}
+                        onDetails={() => handleDetails(item)}
                     />
                 )}
                 style={styles.links}
@@ -62,21 +72,22 @@ export default function Index() {
                 showsVerticalScrollIndicator={false}
             />
 
-            <Modal transparent visible={false}>
+            <Modal transparent visible={showModal} animationType="slide">
+
                 <View style={styles.modal}>
                     <View style={styles.modalContent}>
                         <View style={styles.modalHeader}>
-                            <Text style={styles.modalCategory}>Curso</Text>
-                            <TouchableOpacity>
+                            <Text style={styles.modalCategory}>{link.category}</Text>
+                            <TouchableOpacity onPress={() => setShowModal(false)}>
                                 <MaterialIcons name="close" size={20} color={colors.gray[400]} />
                             </TouchableOpacity>
                         </View>
 
                         <Text style={styles.modalLinkName}>
-                            TesteVinicius
+                            {link.name}
                         </Text>
                         <Text style={styles.modalUrl}>
-                            https://github.com/vsslvini?tab=repositories
+                            {link.url}
                         </Text>
 
 
