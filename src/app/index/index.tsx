@@ -38,6 +38,28 @@ export default function Index() {
         setLink(selected)
     }
 
+    async function linkRemove() {
+        try {
+            await linkStorage.remove(link.id)
+            getLinks()
+            setShowModal(false)
+
+        } catch (error) {
+            Alert.alert("Erro", "Não foi possível excluir")
+            console.log(error)
+        }
+    }
+
+
+    function handleRemove() {
+        Alert.alert("Excluir", "Deseja realmente excluir?", [
+            { style: "cancel", text: "Não" },
+            { text: "Sim", onPress: linkRemove }
+        ])
+    }
+
+
+
     const navigateToAdd = () => {
         router.navigate("/add")
     }
@@ -92,7 +114,7 @@ export default function Index() {
 
 
                         <View style={styles.modalFooter}>
-                            <Option name="Excluir" icon="delete" variant="secudary" />
+                            <Option name="Excluir" icon="delete" variant="secudary" onPress={handleRemove} />
                             <Option name="Abrir" icon="language" variant="primary" />
                         </View>
 
@@ -104,3 +126,4 @@ export default function Index() {
         </View>
     )
 }
+
